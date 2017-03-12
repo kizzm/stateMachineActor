@@ -34,7 +34,8 @@ class ClockPage( tk.Frame ):
     def __init__( self, parent, controller ):
         tk.Frame.__init__( self, parent )
         self.clock = tk.Label( self, text='' )
-        self.clock.pack( pady=10, padx=10 )
+#        self.clock.grid( row=0, column=0, sticky='nsew' )
+        self.clock.pack()
         self.update_page()
         
     def update_page( self ):
@@ -42,4 +43,26 @@ class ClockPage( tk.Frame ):
         self.clock.configure( text=now )
         self.master.after( 100, self.update_page )
         
+class TripleStatBar( tk.Frame ):
+    def __init__( self, parent, controller ):
+        tk.Frame.__init__( self, parent )
+        self._statframes = dict()
+        self.statlabels = dict()
+        for i in range(3):
+#            print(type(i))
+            self._statframes[i] = tk.Frame( self, parent )
+            self._statframes[i].grid( row=0, column=i, sticky='ew' )
+            self.statlabels[i] = tk.Label( self, text='Label{}'.format(i) )
+            self.statlabels[i].grid()
+            
+        self.update_page()
+            
+    def update_page( self ):
+        now = dict()
+        for i,e in enumerate( [ '%H','%M','%S' ] ):
+#            print(type(i))
+            now = time.strftime( e )
+            self.statlabels[i].configure( text=now )
+            self.master.after( 100, self.update_page )
+            
 tstAPP = myClockApp( [ ClockPage ] )
