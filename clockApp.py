@@ -23,17 +23,11 @@ class myClockApp( tk.Tk ):
             frame = F( container, self )
             self.frames[F] = frame
             frame.grid( row=0, column=0, sticky='nsew' )
-        
-        self.update_clock( ClockPage )
+            
         self.mainloop()
         
     def show_frame( self, cont ):
         self.frames[ cont ].tkraise()
-        
-    def update_clock( self, cont ):
-        now = time.strftime('%H:%M:%S' )
-        self.frames[ cont ].clock.configure( text=now )
-        self.after( 100, self.update_clock, cont )
         
 class ClockPage( tk.Frame ):
     
@@ -41,5 +35,11 @@ class ClockPage( tk.Frame ):
         tk.Frame.__init__( self, parent )
         self.clock = tk.Label( self, text='' )
         self.clock.pack( pady=10, padx=10 )
+        self.update_page()
+        
+    def update_page( self ):
+        now = time.strftime('%H:%M:%S')
+        self.clock.configure( text=now )
+        self.master.after( 100, self.update_page )
         
 tstAPP = myClockApp( [ ClockPage ] )
