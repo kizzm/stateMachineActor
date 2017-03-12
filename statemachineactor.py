@@ -7,15 +7,26 @@ Created on Fri Mar 10 20:29:34 2017
 
 import pykka
 import tkinter as tk
+from time import  sleep
 
 class instrumentBackend( pykka.ThreadingActor ):
     
     def __init__( self, *args, **kwargs ):
         super( instrumentBackend, self ).__init__()
+        self.textList = ['Das', 'ist','das','Haus','vom','Ni-','ko-','laus']
+        self.text = '__init__'
+        self.frontend = myApp( [StartPage], self.text )
+        print('before mainloop')
+        self.frontend.mainloop()
+        print('after mainloop')
+        self.actor_ref.tell( { 'command':'start' } )
         
     def on_receive( self, message ):
         if message.get( 'command' ) =='start':
-            pass
+            for e in self.textList:
+                self.text = e
+                sleep(5)
+                self.frontend.update()
         elif message.get( 'command' ) =='stop':
             pass
         elif message.get( 'command' ) =='send':
@@ -65,6 +76,6 @@ class StartPage( tk.Frame ):
     def __init__( self, parent, controller, text ):
         tk.Frame.__init__( self, parent )
         
-        label = tk.Label( self, variable='Start Page' )
-        label.pack( pady=10, padx=10 )
+        self.label = tk.Label( self, textvariable='Start Page' )
+        self.label.pack( pady=10, padx=10 )
         
