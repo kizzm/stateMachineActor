@@ -33,7 +33,7 @@ class myClockApp( tk.Tk ):
     def update_clock( self, cont ):
         now = time.strftime('%H:%M:%S' )
         self.frames[ cont ].clock.configure( text=now )
-        self.after( 1000, self.update_clock, cont )
+        self.after( 100, self.update_clock, cont )
         
 class ClockPage( tk.Frame ):
     
